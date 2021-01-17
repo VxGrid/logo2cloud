@@ -169,16 +169,6 @@
      </property>
     </widget>
    </item>
-   <item row="10" column="2">
-    <widget class="QSpinBox" name="sb_maxPoints">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="maximum">
-      <number>999999999</number>
-     </property>
-    </widget>
-   </item>
    <item row="8" column="2">
     <widget class="QDoubleSpinBox" name="sb_pointSpacing">
      <property name="enabled">
@@ -274,6 +264,26 @@
      </property>
     </widget>
    </item>
+   <item row="10" column="2">
+    <widget class="QLineEdit" name="le_maxPoints">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="3">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
   </layout>
  </widget>
  <tabstops>
@@ -285,7 +295,6 @@
   <tabstop>sb_depth</tabstop>
   <tabstop>sb_pointSpacing</tabstop>
   <tabstop>sb_randomizer</tabstop>
-  <tabstop>sb_maxPoints</tabstop>
   <tabstop>pb_export</tabstop>
   <tabstop>le_path</tabstop>
  </tabstops>

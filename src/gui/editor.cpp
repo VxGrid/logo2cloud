@@ -180,7 +180,7 @@ void Editor::onPropertyChanged()
 
       do
       {
-        qDebug() << "Wait in editor" << Qt::endl;
+        QCoreApplication::processEvents();
         futureStatus = future.wait_for(std::chrono::milliseconds(25));
       } while (futureStatus != std::future_status::ready);
 
@@ -198,7 +198,7 @@ void Editor::updateMaxPointGeneratedSBox()
 {
   double pSpacing = ui_->sb_pointSpacing->value();
   double maxPoints = (ui_->sb_width->value() / pSpacing) * (ui_->sb_height->value() / pSpacing) * std::max(1, int(std::ceil(ui_->sb_depth->value() / pSpacing)));
-  ui_->sb_maxPoints->setValue(maxPoints);
+  ui_->le_maxPoints->setText(QString("%1").arg(maxPoints));
 }
 
 
