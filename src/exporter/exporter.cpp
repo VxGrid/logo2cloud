@@ -1,6 +1,5 @@
 #include "exporter.h"
 #include <iomanip>
-#include <iostream>
 
 
 exporter::~exporter()
@@ -28,7 +27,6 @@ exporterXYZ::exporterXYZ(std::string path)
 
 void exporterXYZ::run()
 {
-  std::cout << "Run exporter" << std::endl;
   for (const auto &point : cloudData_)
   {
     out_ << std::setprecision(4) << point.x_ << '\t' << point.y_ << '\t' << point.z_ << '\t';
@@ -37,7 +35,6 @@ void exporterXYZ::run()
         //int(point.i_)<< '\t' << // TODO: we need to check if we have set refl/intensity
         int(point.r_) << '\t' << int(point.g_) << '\t' << int(point.b_) << '\n';
   }
-  std::cout << "Finished exporter" << std::endl;
 }
 
 //////// Start exporterLAZ ////////

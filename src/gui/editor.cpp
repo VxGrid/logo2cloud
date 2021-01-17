@@ -6,12 +6,14 @@
 #else
 #include <unistd.h>
 #endif
+#include <cmath>
 #include <future>
 
 #include <QDebug>
 #include <QFileDialog>
 #include <QGraphicsPixmapItem>
 #include <QStandardPaths>
+#include <QStatusBar>
 
 #include <QColorDialog>
 
@@ -53,6 +55,12 @@ void Editor::setColor(QColor col)
 }
 
 
+void Editor::setStatusBar(QStatusBar *statusBar)
+{
+  statusBar_ = statusBar;
+}
+
+
 void Editor::setBackGroundPixItem(QGraphicsPixmapItem *backgroundPixItem)
 {
   backgroundPixItem_ = backgroundPixItem;
@@ -86,10 +94,9 @@ void Editor::onPropertyChanged()
   if (sender() == ui_->cb_p2p)
   {
     ui_->sb_pointSpacing->setEnabled(!ui_->cb_p2p->isChecked());
-    if (ui_->cb_p2p->isChecked())
-      ui_->sb_pointSpacing->setValue(ui_->sb_height->value() / image_->height());
-    qDebug() << "onPropChanged: p2p";
-    emit ui_->sb_pointSpacing->editingFinished(); // so propertyvalues are adapted to ratio
+    calculateSetPointSpacing();
+    setPCloudProperties();
+    //emit ui_->sb_pointSpacing->editingFinished(); // so propertyvalues are adapted to ratio
   }
   else if (sender() == ui_->sb_height || sender() == ui_->sb_width || sender() == ui_->sb_depth || sender() == ui_->sb_pointSpacing)
   {
@@ -103,12 +110,10 @@ void Editor::onPropertyChanged()
     double ratio = image_->width() / image_->height();
     (sender() == ui_->sb_height) ? ui_->sb_width->setValue(ratio * ui_->sb_height->value()) : ui_->sb_height->setValue(ui_->sb_width->value() / ratio);
 
-    double height{ui_->sb_height->value()},
-        width{ui_->sb_width->value()},
-        depth{ui_->sb_depth->value()},
-        pointSpacing{ui_->sb_pointSpacing->value()};
+    calculateSetPointSpacing();
+    setPCloudProperties();
 
-    pcloudgen_.setProperties(width, height, depth, pointSpacing);
+    updateMaxPointGeneratedSBox();
   }
   else if (sender() == ui_->pb_colDisPix)
   {
@@ -166,6 +171,8 @@ void Editor::onPropertyChanged()
       QImage img(*image_); // make copy
       qDebug() << "image size: " << img.size() << Qt::endl;
       pcloudgen_.setData(img.bits(), img.height(), img.width());
+      pcloudgen_.setRandomizeValue(ui_->sb_randomizer->value());
+
       pcloudgen_.exportCloud(fPath.toStdString(), pointcloudgenerator::EXPORTER(filters.indexOf(dialog.selectedNameFilter())));
 
       auto future = std::async(std::launch::async, &pointcloudgenerator::run, &pcloudgen_);
@@ -180,6 +187,34 @@ void Editor::onPropertyChanged()
       qDebug() << "Export cloud finished" << Qt::endl;
 
       this->setEnabled(true);
+      if (statusBar_)
+        statusBar_->showMessage(tr("Export finished"));
     }
   }
+}
+
+
+void Editor::updateMaxPointGeneratedSBox()
+{
+  double pSpacing = ui_->sb_pointSpacing->value();
+  double maxPoints = (ui_->sb_width->value() / pSpacing) * (ui_->sb_height->value() / pSpacing) * std::max(1, int(std::ceil(ui_->sb_depth->value() / pSpacing)));
+  ui_->sb_maxPoints->setValue(maxPoints);
+}
+
+
+void Editor::calculateSetPointSpacing()
+{
+  if (ui_->cb_p2p->isChecked())
+    ui_->sb_pointSpacing->setValue(ui_->sb_height->value() / image_->height());
+}
+
+
+void Editor::setPCloudProperties()
+{
+  double height{ui_->sb_height->value()},
+      width{ui_->sb_width->value()},
+      depth{ui_->sb_depth->value()},
+      pointSpacing{ui_->sb_pointSpacing->value()};
+
+  pcloudgen_.setProperties(width, height, depth, pointSpacing);
 }

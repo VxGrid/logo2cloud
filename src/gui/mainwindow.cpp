@@ -191,6 +191,7 @@ void MainWindow::addEditorW2MainWin()
   // Add dockwidget to mainwindow for edit options
   dockEditor_ = new QDockWidget(this);
   editorW_ = new Editor(image_, dockEditor_);
+  editorW_->setStatusBar(statusBar());
   dockEditor_->setWidget(editorW_);
   dockEditor_->setAllowedAreas(Qt::TopDockWidgetArea | Qt::RightDockWidgetArea);
   addDockWidget(Qt::RightDockWidgetArea, dockEditor_);
@@ -217,7 +218,7 @@ void MainWindow::addImage2Scene(const QImage &newImage)
 void MainWindow::scaleImage(double factor)
 {
   scaleFactor_ *= factor;
-  gscene_->views().first()->scale(factor, factor); // FIXME: What if we have multiple images??
+  gscene_->views().first()->scale(factor, factor); // TODO: Add support for multiple images
 }
 
 
@@ -243,7 +244,6 @@ bool MainWindow::setSelectedPixelColorTempToAlpha0(QGraphicsSceneMouseEvent *mou
     QColor col = image_->pixelColor(point.x(), point.y());
 
     editorW_->setColor(col);
-    // FIXME: Test code
 
     if (graphPixItem->zValue() == 1)
     {

@@ -7,6 +7,7 @@
 #include <QWidget>
 
 class QGraphicsPixmapItem;
+class QStatusBar;
 
 namespace Ui
 {
@@ -27,6 +28,8 @@ public:
   /// sets the color into the ui widget w_colDiag
   void setColor(QColor col);
 
+  void setStatusBar(QStatusBar *statusBar);
+
   /// set the background so we can update it from the editor
   void setBackGroundPixItem(QGraphicsPixmapItem *backgroundPixItem);
 
@@ -37,11 +40,17 @@ public slots:
   void onPropertyChanged();
 
 private:
+  void updateMaxPointGeneratedSBox();
+
+  void calculateSetPointSpacing();
+
+  void setPCloudProperties();
+
   /// The ui of the editor
   Ui::Editor *ui_{};
 
   /// The loaded image reference
-  std::shared_ptr<QImage> image_;
+  std::shared_ptr<QImage> image_{};
 
   /// image2cloud generator
   pointcloudgenerator pcloudgen_;
@@ -50,7 +59,10 @@ private:
   QColor color_;
 
   /// Set backgroundPixItem
-  QGraphicsPixmapItem *backgroundPixItem_;
+  QGraphicsPixmapItem *backgroundPixItem_{};
+
+  /// statusbar of mainwindow
+  QStatusBar *statusBar_{};
 };
 
 #endif // EDITOR_H

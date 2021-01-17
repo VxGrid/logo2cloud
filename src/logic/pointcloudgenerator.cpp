@@ -32,6 +32,12 @@ void pointcloudgenerator::setProperties(double width, double height, double dept
 }
 
 
+void pointcloudgenerator::setRandomizeValue(double randomizeValue)
+{
+  cRandomRange_ = randomizeValue;
+}
+
+
 void addDepthLayer2Cloud(const std::vector<Point> &cloudIn, std::vector<Point> &cloudOut, const double YDepthCoordinate)
 {
   cloudOut.reserve(cloudIn.size());
@@ -45,14 +51,14 @@ void addDepthLayer2Cloud(const std::vector<Point> &cloudIn, std::vector<Point> &
 
 void randomizeCloudFunc(std::vector<Point> &cloudInOut, double randomRange, unsigned int threads2Spawn)
 {
-  const int randNum = randomRange * 1000;
+  const int randNum = randomRange * 10000;
 
   // lambda where the cloud is randomized
   auto cloudPartRandomizer = [&cloudInOut, randNum](unsigned long startIter, unsigned long endIter) {
     std::for_each(std::begin(cloudInOut) + startIter, std::begin(cloudInOut) + endIter, [randNum](Point &point) {
-      point.x_ += double((rand() % (2 * randNum)) - randNum) / 1000.0;
-      point.y_ += double((rand() % (2 * randNum)) - randNum) / 1000.0;
-      point.z_ += double((rand() % (2 * randNum)) - randNum) / 1000.0;
+      point.x_ += double((rand() % (2 * randNum)) - randNum) / 10000.0;
+      point.y_ += double((rand() % (2 * randNum)) - randNum) / 10000.0;
+      point.z_ += double((rand() % (2 * randNum)) - randNum) / 10000.0;
     });
   };
 
@@ -93,6 +99,7 @@ void randomizeCloudFunc(std::vector<Point> &cloudInOut, double randomRange, unsi
 void addDepthLayer2CloudFunc(const std::vector<Point> &cloud, std::vector<Point> &depthLayer, const double YDepthCoordinate)
 {
   depthLayer.reserve(cloud.size());
+
   std::transform(std::begin(cloud), std::end(cloud), std::back_inserter(depthLayer), [YDepthCoordinate](const auto p1) {
     Point p2 = p1;
     p2.y_ = YDepthCoordinate;
@@ -103,7 +110,7 @@ void addDepthLayer2CloudFunc(const std::vector<Point> &cloud, std::vector<Point>
 
 void pointcloudgenerator::exportCloud(std::string path, pointcloudgenerator::EXPORTER cloudFormat, bool structured)
 {
-  pixel2Cloud(cloud_); // Calculate image into point cloud
+  image2XZCloud(cloud_); // Calculate image into point cloud
 
   // instantiate export format, will open for write
   switch (cloudFormat)
@@ -129,44 +136,31 @@ void pointcloudgenerator::run()
 
   std::vector<std::future<void>> futures;
   double depth2Calc = depthStep;
-  // calculate first depth layer
-  std::thread depthLayerTh(addDepthLayer2CloudFunc, cloud_, std::ref(depthLayer), depth2Calc);
-  depthLayerTh.join();
-  depthLayer2Randomize = std::move(depthLayer);
-  depthLayer.clear();
-  depth2Calc += depthStep;
 
+  depthLayer2Randomize = cloud_;
+
+  // streamline output, calculate first depthlayer while randomizing cloud_
+  // second iteration: calculate second depth layer, randomize first depthlayer, output randomized cloud_
+  // third till nth iteration: calculate third depth layer, randomize second depthlayer, output randomized first depth layer
+  // end iterations: randomize&output -> only output
+  while (!depthLayerRandomized.empty() || !depthLayer2Randomize.empty() || !depthLayer.empty())
   {
-    // calculate one more depth layer
-    futures.emplace_back(std::async(std::launch::async, addDepthLayer2CloudFunc, cloud_, std::ref(depthLayer), depth2Calc));
-    // randomize first calculated layer
-    futures.emplace_back(std::async(std::launch::async, randomizeCloudFunc, std::ref(depthLayer2Randomize), cRandomRange_, processorCount_ - 1));
-  }
+    if (depth2Calc < cDepth_)
+      futures.emplace_back(std::async(std::launch::async, addDepthLayer2CloudFunc, cloud_, std::ref(depthLayer), depth2Calc));
 
-  for (auto &future : futures)
-    future.get();
 
-  depthLayerRandomized = std::move(depthLayer2Randomize);
-  depthLayer2Randomize = std::move(depthLayer);
-  depthLayer.clear();
-  futures.clear();
-  depth2Calc += depthStep;
+    if (cRandomRange_ && !depthLayer2Randomize.empty())
+      futures.emplace_back(std::async(std::launch::async, randomizeCloudFunc, std::ref(depthLayer2Randomize), cRandomRange_, processorCount_ - 1));
 
-  // now we can do all three things simultaniously, while we have data
-  while (depth2Calc < cDepth_)
-  {
-    // calculate one more depth layer
-    futures.emplace_back(std::async(std::launch::async, addDepthLayer2CloudFunc, cloud_, std::ref(depthLayer), depth2Calc));
-    // randomize first calculated layer
-    futures.emplace_back(std::async(std::launch::async, randomizeCloudFunc, std::ref(depthLayer2Randomize), cRandomRange_, processorCount_ - 1));
-    // export data
-    expClass_->setData(depthLayerRandomized);
-    futures.emplace_back(std::async(std::launch::async, &exporter::run, expClass_.get()));
 
+    if (!depthLayerRandomized.empty())
+    {
+      expClass_->setData(depthLayerRandomized);
+      futures.emplace_back(std::async(std::launch::async, &exporter::run, expClass_.get()));
+    }
 
     for (auto &future : futures)
       future.get();
-
 
     depthLayerRandomized = std::move(depthLayer2Randomize);
     depthLayer2Randomize = std::move(depthLayer);
@@ -175,32 +169,16 @@ void pointcloudgenerator::run()
     depth2Calc += depthStep;
   }
 
-
-  // randomize last calculated layer
-  futures.emplace_back(std::async(std::launch::async, randomizeCloudFunc, std::ref(depthLayer2Randomize), cRandomRange_, processorCount_ - 1));
-  // export data
-  expClass_->setData(depthLayerRandomized);
-  futures.emplace_back(std::async(std::launch::async, &exporter::run, expClass_.get()));
-
-  for (auto &future : futures)
-    future.get();
-
-  //depthLayerRandomized = std::move(depthLayer2Randomize);
-  //futures.clear();
-  // export remaining data
-  expClass_->setData(depthLayer2Randomize);
-  expClass_->run();
-  //auto remainingOutput = std::async(std::launch::async, &exporter::run, expClass_.get());
-  //remainingOutput.get();
-  std::cout << "Finished all data, exit exporter\n";
+  expClass_.reset(); // Finished calculating, now reset
 }
 
 
 void pointcloudgenerator::pixel2Cloud(std::vector<Point> &cloud)
 {
   // Calculate size we will need for our vector:
-  cloud.reserve(rows_ * cols_ * (cDepth_ * rows_ / cHeight_)); // FIXME: currently we have one pixel converts to one point.
+  cloud.reserve(rows_ * cols_ * (cDepth_ * rows_ / cHeight_));
   unsigned int iter{};
+  double X{}, Z{}, Y{0.0};
 
   for (auto r = 0; r < rows_; ++r)
   {
@@ -223,15 +201,48 @@ void pointcloudgenerator::pixel2Cloud(std::vector<Point> &cloud)
       // cDepth_ == depending on the above ---> Y
       */
 
-      double X = double(c) / double(cols_) * cWidth_;
-      double Z = double(r) / double(rows_) * cHeight_;
-      double Y = 0.0;
+      X = double(c) / double(cols_) * cWidth_;
+      Z = double(r) / double(rows_) * cHeight_;
+
       cloud.emplace_back(Point{X, Y, Z, imgDataPtr_[iter + 2], imgDataPtr_[iter + 1], imgDataPtr_[iter], 0});
     }
   }
 }
 
 
+void pointcloudgenerator::image2XZCloud(std::vector<Point> &cloud)
+{
+  cloud.reserve(cWidth_ * cHeight_ / (cPointSpacing_ * cPointSpacing_) + 1);
+  double X{0.0}, Z{0.0}, Y{0.0};
+  unsigned int lookUpCol{}, lookUpRow{}, iter{};
+  const double pixelSpacing = double(cols_) / cWidth_;
+
+  for (int row = 0; row < int(cHeight_ / cPointSpacing_); ++row)
+  {
+    for (int col = 0; col < int(cWidth_ / cPointSpacing_); ++col)
+    {
+      X = double(col) * cPointSpacing_;
+      Z = double(row) * cPointSpacing_;
+
+      lookUpCol = int(X * pixelSpacing);
+      if (lookUpCol >= cols_)
+        continue;
+
+      lookUpRow = int(Z * pixelSpacing);
+      if (lookUpRow >= rows_)
+        continue;
+
+      iter = (lookUpRow * cols_ + lookUpCol) * 4; // position in image buffer
+
+      if (!imgDataPtr_[iter + 3])
+        continue; // alpha empty, continue
+
+      cloud.emplace_back(Point{X, Y, Z, imgDataPtr_[iter + 2], imgDataPtr_[iter + 1], imgDataPtr_[iter], 0});
+    }
+  }
+}
+
+/*
 void pointcloudgenerator::addDepth2Cloud(std::vector<Point> &cloud)
 {
   const double pointspacing = cPointSpacing_; // based on spacing between height and width
@@ -264,8 +275,8 @@ void pointcloudgenerator::addDepth2Cloud(const std::vector<Point> &cloudIn, std:
     return p2;
   });
 }
-
-
+*/
+/*
 void pointcloudgenerator::randomizeCloud(std::vector<Point> &cloud)
 {
   const int randNum = cRandomRange_ * 1000;
@@ -337,3 +348,4 @@ void pointcloudgenerator::randomizeCloud(std::vector<Point> &cloudInOut, double 
   // calculate remaining points
   cloudPartRandomizer(startIterLoc, cloudInOut.size() - 1);
 }
+*/
