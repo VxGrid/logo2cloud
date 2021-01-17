@@ -180,6 +180,9 @@ void Editor::onPropertyChanged()
 
       do
       {
+        if (statusBar_)
+          statusBar_->showMessage(tr("Export Status: %1 %").arg(pcloudgen_.getProgressPercent()));
+
         QCoreApplication::processEvents();
         futureStatus = future.wait_for(std::chrono::milliseconds(25));
       } while (futureStatus != std::future_status::ready);

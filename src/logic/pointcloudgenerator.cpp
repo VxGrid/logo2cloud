@@ -130,6 +130,7 @@ void pointcloudgenerator::exportCloud(std::string path, pointcloudgenerator::EXP
 
 void pointcloudgenerator::run()
 {
+  layerNum2Calculate_ = 100.0 / (std::max(1.0, cDepth_ / cPointSpacing_) + 2.0); // somewhat correct, only estimate
   std::vector<Point> depthLayer, depthLayer2Randomize, depthLayerRandomized;
   const double depthStep = cPointSpacing_; // based on spacing between height and width
   // streamline here
@@ -145,6 +146,8 @@ void pointcloudgenerator::run()
   // end iterations: randomize&output -> only output
   while (!depthLayerRandomized.empty() || !depthLayer2Randomize.empty() || !depthLayer.empty())
   {
+    currentLayerNumCalculating_ += 1.0;
+
     if (depth2Calc < cDepth_)
       futures.emplace_back(std::async(std::launch::async, addDepthLayer2CloudFunc, cloud_, std::ref(depthLayer), depth2Calc));
 
@@ -169,7 +172,15 @@ void pointcloudgenerator::run()
     depth2Calc += depthStep;
   }
 
-  expClass_.reset(); // Finished calculating, now reset
+  // Finished calculating, now reset
+  expClass_.reset();
+  currentLayerNumCalculating_ = 0.0;
+}
+
+
+double pointcloudgenerator::getProgressPercent() const noexcept
+{
+  return (currentLayerNumCalculating_ * layerNum2Calculate_);
 }
 
 

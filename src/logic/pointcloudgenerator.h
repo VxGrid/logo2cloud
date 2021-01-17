@@ -39,6 +39,8 @@ public:
 
   void run();
 
+  [[nodiscard]] double getProgressPercent() const noexcept;
+
 private:
   /// sets all pixel in XZ plane into one 3D point
   void pixel2Cloud(std::vector<Point> &cloud);
@@ -72,6 +74,10 @@ private:
   double cPointSpacing_{.0};
   double cRandomRange_{0.001};
   unsigned int processorCount_{};
+
+  /// the number of depth layers which is currently calculated
+  double currentLayerNumCalculating_{};
+  double layerNum2Calculate_{};
 };
 
 #endif // POINTCLOUDGENERATOR_H
