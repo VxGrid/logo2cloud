@@ -8,49 +8,49 @@
 
 class QGraphicsPixmapItem;
 
-namespace Ui {
+namespace Ui
+{
 class Editor;
 }
 
 class Editor : public QWidget
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    /// Constructor
-    explicit Editor(QImage &image, QWidget *parent = nullptr);
+  /// Constructor
+  explicit Editor(std::shared_ptr<QImage> &image, QWidget *parent = nullptr);
 
-    /// Destructor
-    ~Editor();
+  /// Destructor
+  ~Editor();
 
-    /// sets the color into the ui widget w_colDiag
-    void setColor(QColor col);
+  /// sets the color into the ui widget w_colDiag
+  void setColor(QColor col);
 
-    /// set the background so we can update it from the editor
-    void setBackGroundPixItem(QGraphicsPixmapItem *backgroundPixItem);
+  /// set the background so we can update it from the editor
+  void setBackGroundPixItem(QGraphicsPixmapItem *backgroundPixItem);
 
-    /// updates the inserted image with these colors
-    static void updateImage(QImage &image, QColor colBefore, QColor colAfter);
+  /// updates the inserted image with these colors
+  static void updateImage(QImage &image, QColor colBefore, QColor colAfter);
 
 public slots:
-    void onPropertyChanged();
+  void onPropertyChanged();
 
 private:
-    /// The ui of the editor
-    Ui::Editor *ui_{};
+  /// The ui of the editor
+  Ui::Editor *ui_{};
 
-    /// The loaded image reference
-    QImage &image_;
+  /// The loaded image reference
+  std::shared_ptr<QImage> image_;
 
-    /// image2cloud generator
-    pointcloudgenerator pcloudgen_;
+  /// image2cloud generator
+  pointcloudgenerator pcloudgen_;
 
-    /// Currently selected color
-    QColor color_;
+  /// Currently selected color
+  QColor color_;
 
-    /// Set backgroundPixItem
-    QGraphicsPixmapItem *backgroundPixItem_;
-
+  /// Set backgroundPixItem
+  QGraphicsPixmapItem *backgroundPixItem_;
 };
 
 #endif // EDITOR_H

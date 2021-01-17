@@ -19,6 +19,7 @@ find_package(Qt5 COMPONENTS Widgets LinguistTools REQUIRED)
 
 add_executable( gui2 )
 
+
 target_sources( gui2
     PRIVATE "main.cpp"
             "mainwindow.cpp"
