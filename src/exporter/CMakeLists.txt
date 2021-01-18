@@ -6,7 +6,7 @@ project( exporter
 
 # An OBJECT-library, used to only compile common sources once
 # which are used in both math-libraries.
-add_library( exporter SHARED )
+add_library( exporter STATIC )
 target_sources( exporter
     PRIVATE   "exporter.h"
               "exporter.cpp"

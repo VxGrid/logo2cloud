@@ -2,10 +2,12 @@
 #include "ui_editor.h"
 
 #ifdef _WIN32
+#define NOMINMAX // disable min max macro of Windows.h
 #include <Windows.h>
 #else
 #include <unistd.h>
 #endif
+#include <algorithm>
 #include <cmath>
 #include <future>
 
