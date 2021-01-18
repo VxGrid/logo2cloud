@@ -175,6 +175,7 @@ void pointcloudgenerator::run()
   // Finished calculating, now reset
   expClass_.reset();
   currentLayerNumCalculating_ = 0.0;
+  cloud_.clear();
 }
 
 
