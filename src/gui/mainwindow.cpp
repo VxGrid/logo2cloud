@@ -33,8 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
 
   resize(QGuiApplication::primaryScreen()->availableSize());
 
-  loadFile("/home/martin/Pictures/google.png");
-  // loadFile("/home/martin/Pictures/test.png");
+  //loadFile("/home/martin/Pictures/google.png");
 }
 
 
