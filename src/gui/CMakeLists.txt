@@ -7,20 +7,22 @@ project( gui
 
 set( CMAKE_PREFIX_PATH "~/Qt/5.15.2/gcc_64/lib/cmake/Qt5/" )
 
-#set(CMAKE_INCLUDE_CURRENT_DIR ON)
-#set(CMAKE_PREFIX_PATH "~/Qt/Tools/CMake/bin/")
-#set(CMAKE_PREFIX_PATH "/home/martin/Qt/5.15.2/gcc_64/"
-#    "~/Qt/Tools/CMake/bin/")
-
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 find_package(Qt5 COMPONENTS Widgets LinguistTools REQUIRED)
 
-add_executable( gui2 )
+set( TS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/logo2Cloud_de_GER.ts" )
+qt5_create_translation( qmFiles ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES} )
+qt5_add_translation( qmFiles ${TS_FILES} )
 
+add_custom_target( translations DEPENDS ${qmFiles} )
 
-target_sources( gui2
+add_executable( logo2Cloud )
+
+add_dependencies( logo2Cloud translations )
+
+target_sources( logo2Cloud
     PRIVATE "main.cpp"
             "mainwindow.cpp"
             "mainwindow.h"
@@ -28,25 +30,10 @@ target_sources( gui2
             "editor.h"
             "editor.cpp"
             "editor.ui"
-            ${TS_FILES}
+            ${translations}
     )
 
-target_link_libraries( gui2
+target_link_libraries( logo2Cloud
     PRIVATE logo2cloud::logic
             Qt5::Widgets
     )
-
-#  add_executable(logo2Cloud
-#    main.cpp
-#    mainwindow.cpp
-#    mainwindow.h
-#    mainwindow.ui
-#    editor.h
-#    editor.cpp
-#    editor.ui
-#    ${TS_FILES}
-#  )
-
-#target_link_libraries(logo2Cloud PRIVATE Qt5::Widgets)
-
-qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})

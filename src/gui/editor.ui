@@ -35,6 +35,9 @@
    </item>
    <item row="0" column="1" colspan="2">
     <widget class="QPushButton" name="pb_colDisPix">
+     <property name="toolTip">
+      <string>Choose a background color so all pixel with alpha = 0 will be suppressed</string>
+     </property>
      <property name="text">
       <string>Choose disabled color</string>
      </property>
@@ -49,6 +52,9 @@
    </item>
    <item row="4" column="2" colspan="2">
     <widget class="QCheckBox" name="cb_p2p">
+     <property name="toolTip">
+      <string>Convert exactly one pixel into one XZ point</string>
+     </property>
      <property name="text">
       <string>1 px into 1 point</string>
      </property>
@@ -72,6 +78,9 @@
    </item>
    <item row="8" column="1">
     <widget class="QLabel" name="label_8">
+     <property name="toolTip">
+      <string>Spacing between points</string>
+     </property>
      <property name="text">
       <string>Spacing:</string>
      </property>
@@ -117,6 +126,9 @@
    </item>
    <item row="1" column="1" colspan="2">
     <widget class="QPushButton" name="pb_removeColor">
+     <property name="toolTip">
+      <string>Set the selected color to alpha = 0</string>
+     </property>
      <property name="text">
       <string>Remove color</string>
      </property>
@@ -164,6 +176,9 @@
    </item>
    <item row="10" column="1">
     <widget class="QLabel" name="label_10">
+     <property name="toolTip">
+      <string>Approx max amount of points which will be written</string>
+     </property>
      <property name="text">
       <string>~points:</string>
      </property>
@@ -174,6 +189,9 @@
      <property name="enabled">
       <bool>false</bool>
      </property>
+     <property name="toolTip">
+      <string>Spacing between points</string>
+     </property>
      <property name="decimals">
       <number>3</number>
      </property>
@@ -181,6 +199,9 @@
    </item>
    <item row="4" column="1">
     <widget class="QLabel" name="label_7">
+     <property name="toolTip">
+      <string>Convert exactly one pixel into one XZ point</string>
+     </property>
      <property name="text">
       <string>P2P:</string>
      </property>
@@ -239,6 +260,9 @@
    </item>
    <item row="9" column="2">
     <widget class="QDoubleSpinBox" name="sb_randomizer">
+     <property name="toolTip">
+      <string>Add noise to each point in this range</string>
+     </property>
      <property name="decimals">
       <number>4</number>
      </property>
@@ -252,8 +276,11 @@
    </item>
    <item row="9" column="1">
     <widget class="QLabel" name="label_11">
+     <property name="toolTip">
+      <string>Add noise to each point in this range</string>
+     </property>
      <property name="text">
-      <string>Randomizer:</string>
+      <string>Noise:</string>
      </property>
     </widget>
    </item>
@@ -268,6 +295,9 @@
     <widget class="QLineEdit" name="le_maxPoints">
      <property name="enabled">
       <bool>false</bool>
+     </property>
+     <property name="toolTip">
+      <string>Approx max amount of points which will be written</string>
      </property>
     </widget>
    </item>

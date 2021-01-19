@@ -42,9 +42,6 @@ public:
   [[nodiscard]] double getProgressPercent() const noexcept;
 
 private:
-  /// sets all pixel in XZ plane into one 3D point
-  void pixel2Cloud(std::vector<Point> &cloud);
-
   /// calculates out of the image a XZ point cloud (no depth)
   void image2XZCloud(std::vector<Point> &cloud);
 

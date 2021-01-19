@@ -37,18 +37,7 @@ void pointcloudgenerator::setRandomizeValue(double randomizeValue)
   cRandomRange_ = randomizeValue;
 }
 
-
-void addDepthLayer2Cloud(const std::vector<Point> &cloudIn, std::vector<Point> &cloudOut, const double YDepthCoordinate)
-{
-  cloudOut.reserve(cloudIn.size());
-  std::transform(std::begin(cloudIn), std::end(cloudIn), std::back_inserter(cloudOut), [YDepthCoordinate](const auto p1) {
-    Point p2 = p1;
-    p2.y_ = YDepthCoordinate;
-    return p2;
-  });
-}
-
-
+/// free functions
 void randomizeCloudFunc(std::vector<Point> &cloudInOut, double randomRange, unsigned int threads2Spawn)
 {
   const int randNum = randomRange * 10000;
@@ -184,43 +173,18 @@ double pointcloudgenerator::getProgressPercent() const noexcept
   return (currentLayerNumCalculating_ * layerNum2Calculate_);
 }
 
+/*
+// To remember:
+int red=imgDataPtr_[iter]; // blue
+int green=imgDataPtr_[iter+1]; // green
+int blue=imgDataPtr_[iter+2]; // red
+int alpha=imgDataPtr_[iter+3]; // alpha
 
-void pointcloudgenerator::pixel2Cloud(std::vector<Point> &cloud)
-{
-  // Calculate size we will need for our vector:
-  cloud.reserve(rows_ * cols_ * (cDepth_ * rows_ / cHeight_));
-  unsigned int iter{};
-  double X{}, Z{}, Y{0.0};
-
-  for (auto r = 0; r < rows_; ++r)
-  {
-    for (auto c = 0; c < cols_; ++c)
-    {
-      iter = (r * cols_ + c) * 4; // position in image buffer
-      if (!imgDataPtr_[iter + 3]) // alpha empty, continue
-        continue;
-
-      /*
-      // To remember:
-      int red=imgDataPtr_[iter]; // blue
-      int green=imgDataPtr_[iter+1]; // green
-      int blue=imgDataPtr_[iter+2]; // red
-      int alpha=imgDataPtr_[iter+3]; // alpha
-
-      // calculate 3d position of the pixel
-      // cHeight_ == rows_ ---> Z
-      // cWidth_ == cols_  ---> X
-      // cDepth_ == depending on the above ---> Y
-      */
-
-      X = double(c) / double(cols_) * cWidth_;
-      Z = double(r) / double(rows_) * cHeight_;
-
-      cloud.emplace_back(Point{X, Y, Z, imgDataPtr_[iter + 2], imgDataPtr_[iter + 1], imgDataPtr_[iter], 0});
-    }
-  }
-}
-
+// calculate 3d position of the pixel
+// cHeight_ == rows_ ---> Z
+// cWidth_ == cols_  ---> X
+// cDepth_ == depending on the above ---> Y
+*/
 
 void pointcloudgenerator::image2XZCloud(std::vector<Point> &cloud)
 {
@@ -249,7 +213,8 @@ void pointcloudgenerator::image2XZCloud(std::vector<Point> &cloud)
       if (!imgDataPtr_[iter + 3])
         continue; // alpha empty, continue
 
-      cloud.emplace_back(Point{X, Y, Z, imgDataPtr_[iter + 2], imgDataPtr_[iter + 1], imgDataPtr_[iter], 0});
+      // Z axis and rows coordinate system are inverted to each other
+      cloud.emplace_back(Point{X, Y, cHeight_ - Z, imgDataPtr_[iter + 2], imgDataPtr_[iter + 1], imgDataPtr_[iter], 0});
     }
   }
 }

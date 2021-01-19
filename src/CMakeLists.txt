@@ -16,8 +16,6 @@ add_subdirectory( exporter )
 
 add_subdirectory( logic )
 
-add_subdirectory( translations )
-
 add_subdirectory( gui )
 
 #MESSAGE(${CMAKE_CURRENT_SOURCE_DIR})
