@@ -8,9 +8,9 @@ If you like to contribute by adding translations, proposing ideas, or code, feel
 
 Dependencies to the project:
 
--C++ 17
--Qt (must)
--LASzip (optional; https://laszip.org/ - necessary for LAS and LAZ export)
+-C++ 17  
+-Qt (must)  
+-LASzip (optional; https://laszip.org/ - necessary for LAS and LAZ export)  
 
 1. Open an image (png, jpg, svg, ...)
 2. "Choose disabled color", will set the background to that color, so you can see which pixel in the image have an alpha value of zero and will not get exported
