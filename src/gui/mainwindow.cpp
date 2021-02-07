@@ -32,8 +32,6 @@ MainWindow::MainWindow(QWidget *parent)
   setCentralWidget(ui_->mdiArea);
 
   resize(QGuiApplication::primaryScreen()->availableSize());
-
-  //loadFile("/home/martin/Pictures/google.png");
 }
 
 
@@ -127,11 +125,14 @@ void MainWindow::open()
 
 void MainWindow::close()
 {
-  ui_->mdiArea->removeSubWindow(subWin_);
-  gscene_->removeEventFilter(this);
-  removeDockWidget(dockEditor_);
-  image_.reset();
-  ui_->actionOpen_File->setEnabled(true);
+  if (image_)
+  {
+    ui_->mdiArea->removeSubWindow(subWin_);
+    gscene_->removeEventFilter(this);
+    removeDockWidget(dockEditor_);
+    image_.reset();
+    ui_->actionOpen_File->setEnabled(true);
+  }
 }
 
 
