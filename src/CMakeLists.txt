@@ -2,21 +2,22 @@ cmake_minimum_required( VERSION 3.13 )
 
 project( logo2Cloud
     #LANGUAGES CXX
-    VERSION 1.0.0
+    VERSION 1.0.1
     DESCRIPTION "Project to convert a logo (image) into a point cloud."
     )
 
 set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
-SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread" )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread" )
 
 set( CMAKE_POSITION_INDEPENDENT_CODE ON )
 
 add_subdirectory( exporter )
 
+add_subdirectory( gui )
+
 add_subdirectory( logic )
 
-add_subdirectory( gui )
 
 #MESSAGE(${CMAKE_CURRENT_SOURCE_DIR})
 #if defined(__linux) || defined(__linux__) || defined(linux)

@@ -1,5 +1,16 @@
 #include "pointcloudgenerator.h"
 
+#ifdef BUILD_LAS_WRITER
+#include "exporterLAS.h"
+#endif
+
+#ifdef BUILD_XYZ_WRITER
+#include "exporterXYZ.h"
+#endif
+
+//#include "laszip/laszip_api.h"
+
+
 #include <algorithm>
 #include <cmath>
 #include <future>
@@ -7,6 +18,14 @@
 #include <thread>
 
 #include <iostream>
+
+
+namespace liblas
+{
+
+class Header;
+class Writer;
+} // namespace liblas
 
 pointcloudgenerator::pointcloudgenerator()
 {
@@ -97,28 +116,56 @@ void addDepthLayer2CloudFunc(const std::vector<Point> &cloud, std::vector<Point>
 }
 
 
-void pointcloudgenerator::exportCloud(std::string path, pointcloudgenerator::EXPORTER cloudFormat, bool structured)
+int pointcloudgenerator::exportCloud(std::string path, pointcloudgenerator::EXPORTER cloudFormat, bool structured)
 {
   image2XZCloud(cloud_); // Calculate image into point cloud
-
-  // instantiate export format, will open for write
-  switch (cloudFormat)
+  try
   {
-  case EXPORTER::XYZ:
-    path.append(".xyz");
-    expClass_ = std::make_unique<exporterXYZ>(path);
-    break;
-  default:
-    // no format defined
-    return;
+    // instantiate export format, will open for write
+    switch (cloudFormat)
+    {
+#ifdef BUILD_XYZ_WRITER
+    case EXPORTER::XYZ:
+      path.append(".xyz");
+      expClass_ = std::make_unique<exporterXYZ>(path);
+      break;
+#endif
+
+#ifdef BUILD_LAS_WRITER
+    case EXPORTER::LAS:
+      path.append(".las");
+      expClass_ = std::make_unique<exporterLAZ>(path);
+      break;
+#endif
+#ifdef BUILD_LAS_WRITER
+    case EXPORTER::LAZ:
+      path.append(".laz");
+      expClass_ = std::make_unique<exporterLAZ>(path);
+      break;
+#endif
+    default:
+      // no format defined
+      return EXIT_FAILURE;
+    }
+  }
+  catch (...)
+  {
+    return EXIT_FAILURE;
   }
 
   expClass_->setPath(path);
+  return EXIT_SUCCESS;
 }
 
 
 void pointcloudgenerator::run()
 {
+  if (!expClass_)
+  {
+    std::cout << "No Export pointer, exit\n";
+    return;
+  }
+
   layerNum2Calculate_ = 100.0 / (std::max(1.0, cDepth_ / cPointSpacing_) + 2.0); // somewhat correct, only estimate
   std::vector<Point> depthLayer, depthLayer2Randomize, depthLayerRandomized;
   const double depthStep = cPointSpacing_; // based on spacing between height and width

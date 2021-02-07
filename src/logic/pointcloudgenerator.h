@@ -15,13 +15,13 @@ public:
   enum EXPORTER
   {
     XYZ = 0,
-    //        LAS, // TODO: implement
-    //        LAZ,
-    //        E57,
+    LAS,
+    LAZ,
+    //        E57, // TODO: implement
     //        PLY,
   };
 
-  const std::vector<std::string> fileFormats{"ASCII (*.xyz)"}; //, "Binary (*.las)", "Binary (*.laz)", "ASTM (*.e57)", "Stanford (*.ply)"};
+  const std::vector<std::string> fileFormats{"ASCII (*.xyz)", "LASer (*.las)", "Compressed LASer (*.laz)"}; //, , "ASTM (*.e57)", "Stanford (*.ply)"};
 
   /// Constructor
   pointcloudgenerator();
@@ -35,7 +35,7 @@ public:
   void setRandomizeValue(double randomizeValue);
 
   /// Exports the provided cloud in the format
-  void exportCloud(std::string path, EXPORTER cloudFormat, bool structured = false);
+  int exportCloud(std::string path, EXPORTER cloudFormat, bool structured = false);
 
   void run();
 

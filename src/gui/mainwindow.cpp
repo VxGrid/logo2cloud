@@ -115,9 +115,10 @@ void MainWindow::open()
   const QByteArrayList supportedMimeTypes = QImageReader::supportedMimeTypes();
   for (const QByteArray &mimeTypeName : supportedMimeTypes)
     mimeTypeFilters.append(mimeTypeName);
+
   mimeTypeFilters.sort();
+  mimeTypeFilters.prepend("application/octet-stream");
   dialog.setMimeTypeFilters(mimeTypeFilters);
-  dialog.selectMimeTypeFilter("image/jpeg");
 
   if (dialog.exec() == QDialog::Accepted && loadFile(dialog.selectedFiles().first()))
     ui_->actionOpen_File->setEnabled(false);

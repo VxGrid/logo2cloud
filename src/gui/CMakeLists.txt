@@ -1,8 +1,8 @@
-cmake_minimum_required( VERSION 3.13 )
+#cmake_minimum_required( VERSION 3.13 )
 
-project( gui
-         VERSION 1.0.0
-         DESCRIPTION "My fancy gui." )
+#project( gui
+#         VERSION 1.0.0
+#         DESCRIPTION "My fancy gui." )
 
 
 set( CMAKE_PREFIX_PATH "~/Qt/5.15.2/gcc_64/lib/cmake/Qt5/" )

@@ -1,18 +1,21 @@
-cmake_minimum_required( VERSION 3.13 )
-
-project( BusinessLogic
-         VERSION 1.0.0
-         DESCRIPTION "Internal logic-library." )
-
-# An OBJECT-library, used to only compile common sources once
-# which are used in both math-libraries.
 add_library( logic OBJECT )
 target_sources( logic
     PRIVATE   "pointcloudgenerator.cpp"
     PUBLIC    "${CMAKE_CURRENT_SOURCE_DIR}/pointcloudgenerator.h"
     )
 
-# Required include search-paths and constexpr support.
+
+get_directory_property(BUILD_XYZ "${CMAKE_CURRENT_SOURCE_DIR}/../exporter" DEFINITION BUILD_XYZ_WRITER)
+if (${BUILD_XYZ})
+    add_definitions(-DBUILD_XYZ_WRITER)
+endif()
+
+get_directory_property(BUILD_LAS DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../exporter DEFINITION BUILD_LAS_WRITER)
+if (${BUILD_LAS})
+    add_definitions(-DBUILD_LAS_WRITER)
+endif()
+
+
 target_include_directories( logic
     PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../exporter" )
 

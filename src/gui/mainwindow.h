@@ -44,7 +44,6 @@ private:
   /// loads an image from hard drive
   bool loadFile(const QString &fileName);
 
-
   /// Adds the Editor as a dockwidget to the main window
   void addEditorW2MainWin();
 
@@ -53,7 +52,6 @@ private:
 
   /// Scale the image depending on factor
   void scaleImage(double factor);
-
 
   bool setSelectedPixelColorTempToAlpha0(QGraphicsSceneMouseEvent *mouseEvent);
 

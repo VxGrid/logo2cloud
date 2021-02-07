@@ -140,9 +140,15 @@ void Editor::onPropertyChanged()
   {
     // Chose path
     QFileDialog dialog(this, tr("Save File as"));
-    auto stdPaths = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
-    if (!stdPaths.empty())
+    const auto stdPaths = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+    static bool firstDialog = true;
+
+    if (firstDialog && !stdPaths.empty())
+    {
+      firstDialog = false;
       dialog.setDirectory(stdPaths.first());
+    }
+
     dialog.setAcceptMode(QFileDialog::AcceptSave);
     dialog.setFileMode(QFileDialog::AnyFile);
     //dialog.setOption(QFileDialog::ShowDirsOnly);
@@ -175,7 +181,11 @@ void Editor::onPropertyChanged()
       pcloudgen_.setData(img.bits(), img.height(), img.width());
       pcloudgen_.setRandomizeValue(ui_->sb_randomizer->value());
 
-      pcloudgen_.exportCloud(fPath.toStdString(), pointcloudgenerator::EXPORTER(filters.indexOf(dialog.selectedNameFilter())));
+      if (pcloudgen_.exportCloud(fPath.toStdString(), pointcloudgenerator::EXPORTER(filters.indexOf(dialog.selectedNameFilter()))))
+      {
+        statusBar_->showMessage(tr("Initializing the writer failed!!!"));
+        return;
+      }
 
       auto future = std::async(std::launch::async, &pointcloudgenerator::run, &pcloudgen_);
       std::future_status futureStatus;

@@ -38,23 +38,3 @@ protected:
   /// Path where to export the point cloud to
   std::string path_{};
 };
-
-
-class exporterXYZ final : public exporter
-{
-public:
-  /// ctor
-  exporterXYZ(std::string path);
-  void run() override;
-
-private:
-  /// our output file stream
-  std::ofstream out_;
-};
-
-
-class exporterLAZ final : public exporter
-{
-public:
-  void run() override;
-};
