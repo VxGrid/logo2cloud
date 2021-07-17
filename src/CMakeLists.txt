@@ -19,6 +19,8 @@ add_subdirectory( gui )
 add_subdirectory( logic )
 
 
+
+
 #MESSAGE(${CMAKE_CURRENT_SOURCE_DIR})
 #if defined(__linux) || defined(__linux__) || defined(linux)
 # define LINUX
