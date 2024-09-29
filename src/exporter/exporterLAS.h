@@ -4,8 +4,6 @@
 
 #include "laszip/laszip_api.h"
 
-#include <memory>
-
 
 class exporterLAZ final : public exporter
 {

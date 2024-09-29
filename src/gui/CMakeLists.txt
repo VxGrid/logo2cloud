@@ -1,5 +1,5 @@
 
-set( CMAKE_PREFIX_PATH "~/Qt/6.1.0/gcc_64/lib/cmake/" )
+set( CMAKE_PREFIX_PATH "~/Qt/6.6.3/gcc_64/lib/cmake/" )
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)

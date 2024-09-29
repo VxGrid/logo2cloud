@@ -107,22 +107,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="editor.cpp" line="142"/>
+        <location filename="editor.cpp" line="146"/>
         <source>Save File as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="editor.cpp" line="186"/>
+        <location filename="editor.cpp" line="190"/>
         <source>Initializing the writer failed!!!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="editor.cpp" line="196"/>
+        <location filename="editor.cpp" line="200"/>
         <source>Export Status: %1 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="editor.cpp" line="206"/>
+        <location filename="editor.cpp" line="210"/>
         <source>Export finished</source>
         <translation type="unfinished"></translation>
     </message>

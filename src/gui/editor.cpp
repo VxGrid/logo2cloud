@@ -14,6 +14,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QGraphicsPixmapItem>
+#include <QShortcut>
 #include <QStandardPaths>
 #include <QStatusBar>
 
@@ -38,6 +39,9 @@ Editor::Editor(std::shared_ptr<QImage> &image, QWidget *parent) : QWidget(parent
   connect(ui_->pb_removeColor, &QPushButton::clicked, this, &Editor::onPropertyChanged);
   connect(ui_->pb_export, &QPushButton::clicked, this, &Editor::onPropertyChanged);
   connect(ui_->cb_p2p, &QCheckBox::clicked, this, &Editor::onPropertyChanged);
+  QKeySequence ks("F1");
+  QShortcut* sh = new QShortcut(ks, this);
+  connect(sh, &QShortcut::activated, [this](){ui_->pb_removeColor->animateClick();});
 
   emit ui_->sb_height->editingFinished(); // so propertyvalues are adapted to ratio
   emit ui_->cb_p2p->clicked();            // so we have values in ui_.sb_pointSpacing
