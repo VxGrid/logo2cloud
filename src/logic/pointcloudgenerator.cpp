@@ -27,13 +27,13 @@ class Header;
 class Writer;
 } // namespace liblas
 
-pointcloudgenerator::pointcloudgenerator()
+PointCloudGenerator::PointCloudGenerator()
 {
   processorCount_ = std::max(std::thread::hardware_concurrency(), 8u); // we use at least 8 threads
 }
 
 
-void pointcloudgenerator::setData(const unsigned char *imgDataPtr,
+void PointCloudGenerator::setData(const unsigned char *imgDataPtr,
                                   unsigned int rows, unsigned int cols)
 {
   imgDataPtr_ = imgDataPtr;
@@ -42,7 +42,7 @@ void pointcloudgenerator::setData(const unsigned char *imgDataPtr,
 }
 
 
-void pointcloudgenerator::setProperties(double width, double height, double depth, double pointSpacing)
+void PointCloudGenerator::setProperties(double width, double height, double depth, double pointSpacing)
 {
   cWidth_ = width;
   cHeight_ = height;
@@ -51,7 +51,7 @@ void pointcloudgenerator::setProperties(double width, double height, double dept
 }
 
 
-void pointcloudgenerator::setRandomizeValue(double randomizeValue)
+void PointCloudGenerator::setRandomizeValue(double randomizeValue)
 {
   cRandomRange_ = randomizeValue;
 }
@@ -116,7 +116,7 @@ void addDepthLayer2CloudFunc(const std::vector<Point> &cloud, std::vector<Point>
 }
 
 
-int pointcloudgenerator::exportCloud(std::string path, pointcloudgenerator::EXPORTER cloudFormat, bool structured)
+int PointCloudGenerator::exportCloud(std::string path, PointCloudGenerator::EXPORTER cloudFormat, bool structured)
 {
   image2XZCloud(cloud_); // Calculate image into point cloud
   try
@@ -127,20 +127,20 @@ int pointcloudgenerator::exportCloud(std::string path, pointcloudgenerator::EXPO
 #ifdef BUILD_XYZ_WRITER
     case EXPORTER::XYZ:
       path.append(".xyz");
-      expClass_ = std::make_unique<exporterXYZ>(path);
+      expClass_ = std::make_unique<ExporterXYZ>(path);
       break;
 #endif
 
 #ifdef BUILD_LAS_WRITER
     case EXPORTER::LAS:
       path.append(".las");
-      expClass_ = std::make_unique<exporterLAZ>(path);
+      expClass_ = std::make_unique<ExporterLAZ>(path);
       break;
 #endif
 #ifdef BUILD_LAS_WRITER
     case EXPORTER::LAZ:
       path.append(".laz");
-      expClass_ = std::make_unique<exporterLAZ>(path);
+      expClass_ = std::make_unique<ExporterLAZ>(path);
       break;
 #endif
     default:
@@ -158,7 +158,7 @@ int pointcloudgenerator::exportCloud(std::string path, pointcloudgenerator::EXPO
 }
 
 
-void pointcloudgenerator::run()
+void PointCloudGenerator::run()
 {
   if (!expClass_)
   {
@@ -195,7 +195,7 @@ void pointcloudgenerator::run()
     if (!depthLayerRandomized.empty())
     {
       expClass_->setData(depthLayerRandomized);
-      futures.emplace_back(std::async(std::launch::async, &exporter::run, expClass_.get()));
+      futures.emplace_back(std::async(std::launch::async, &Exporter::run, expClass_.get()));
     }
 
     for (auto &future : futures)
@@ -215,7 +215,7 @@ void pointcloudgenerator::run()
 }
 
 
-double pointcloudgenerator::getProgressPercent() const noexcept
+double PointCloudGenerator::getProgressPercent() const noexcept
 {
   return (currentLayerNumCalculating_ * layerNum2Calculate_);
 }
@@ -233,7 +233,7 @@ int alpha=imgDataPtr_[iter+3]; // alpha
 // cDepth_ == depending on the above ---> Y
 */
 
-void pointcloudgenerator::image2XZCloud(std::vector<Point> &cloud)
+void PointCloudGenerator::image2XZCloud(std::vector<Point> &cloud)
 {
   cloud.reserve(cWidth_ * cHeight_ / (cPointSpacing_ * cPointSpacing_) + 1);
   double X{0.0}, Z{0.0}, Y{0.0};

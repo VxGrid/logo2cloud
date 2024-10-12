@@ -1,18 +1,18 @@
 #include "exporter.h"
 
 
-exporter::~exporter()
+Exporter::~Exporter()
 {
 }
 
 
-void exporter::setPath(std::string path)
+void Exporter::setPath(std::string path)
 {
     path_ = path;
 }
 
 
-void exporter::setData(const std::vector<Point>& cloud)
+void Exporter::setData(const std::vector<Point>& cloud)
 {
     cloudData_ = cloud;
 }

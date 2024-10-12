@@ -2,11 +2,11 @@
 
 #include "exporter.h"
 
-class exporterXYZ final : public exporter
+class ExporterXYZ final : public Exporter
 {
 public:
   /// ctor
-  exporterXYZ(std::string path);
+  ExporterXYZ(std::string path);
   void run() override;
 
 private:

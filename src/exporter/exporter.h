@@ -16,11 +16,11 @@ struct Point
 };
 
 
-class exporter
+class Exporter
 {
 public:
   /// Destructor
-  virtual ~exporter();
+  virtual ~Exporter();
 
   /// Sets the output file path
   virtual void setPath(std::string path);

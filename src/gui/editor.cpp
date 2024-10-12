@@ -1,7 +1,7 @@
 #include "editor.h"
 #include "ui_editor.h"
 
-#ifdef _WIN32
+#ifdef WIN32
 #define NOMINMAX // disable min max macro of Windows.h
 #include <Windows.h>
 #else
@@ -185,13 +185,13 @@ void Editor::onPropertyChanged()
       pcloudgen_.setData(img.bits(), img.height(), img.width());
       pcloudgen_.setRandomizeValue(ui_->sb_randomizer->value());
 
-      if (pcloudgen_.exportCloud(fPath.toStdString(), pointcloudgenerator::EXPORTER(filters.indexOf(dialog.selectedNameFilter()))))
+      if (pcloudgen_.exportCloud(fPath.toStdString(), PointCloudGenerator::EXPORTER(filters.indexOf(dialog.selectedNameFilter()))))
       {
         statusBar_->showMessage(tr("Initializing the writer failed!!!"));
         return;
       }
 
-      auto future = std::async(std::launch::async, &pointcloudgenerator::run, &pcloudgen_);
+      auto future = std::async(std::launch::async, &PointCloudGenerator::run, &pcloudgen_);
       std::future_status futureStatus;
 
       do

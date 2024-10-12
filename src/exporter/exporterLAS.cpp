@@ -4,13 +4,15 @@
 #include <string.h>
 
 
-exporterLAZ::exporterLAZ(std::string path)
+ExporterLAZ::ExporterLAZ(std::string path)
 {
+#ifdef WIN32
   if (laszip_load_dll())
   {
     std::cout << "DLL ERROR: loading LASzip DLL" << std::endl;
     throw std::runtime_error("DLL ERROR: loading LASzip DLL");
   }
+#endif
 
   // get version of LASzip DLL
   laszip_U8 version_major;
@@ -79,7 +81,7 @@ exporterLAZ::exporterLAZ(std::string path)
 }
 
 
-exporterLAZ::~exporterLAZ()
+ExporterLAZ::~ExporterLAZ()
 {
   // close the writer
   if (laszip_close_writer(laszip_writer_)) // I guess throwing in a destructor is a nono? See E.16 ore guidelines
@@ -89,12 +91,14 @@ exporterLAZ::~exporterLAZ()
   if (laszip_destroy(laszip_writer_))
     std::cout << "DLL ERROR: destroying laszip writer" << std::endl;
 
+  #ifdef WIN32
   if (laszip_unload_dll())
     std::cout << "DLL ERROR: unloading DLL failed" << std::endl;
+#endif
 }
 
 
-void exporterLAZ::run()
+void ExporterLAZ::run()
 {
 
   for (const auto &pointXYZ : cloudData_)

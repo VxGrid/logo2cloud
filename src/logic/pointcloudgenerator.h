@@ -1,7 +1,6 @@
 #ifndef POINTCLOUDGENERATOR_H
 #define POINTCLOUDGENERATOR_H
 
-#include <array>
 #include <memory>
 #include <string>
 #include <vector>
@@ -9,7 +8,7 @@
 #include "exporter.h"
 
 
-class pointcloudgenerator
+class PointCloudGenerator
 {
 public:
   enum EXPORTER
@@ -24,7 +23,7 @@ public:
   const std::vector<std::string> fileFormats{"ASCII (*.xyz)", "LASer (*.las)", "Compressed LASer (*.laz)"}; //, , "ASTM (*.e57)", "Stanford (*.ply)"};
 
   /// Constructor
-  pointcloudgenerator();
+  PointCloudGenerator();
 
   /// Set the neccessary data
   void setData(unsigned char const *imgDataPtr, unsigned int rows, unsigned int cols);
@@ -55,7 +54,7 @@ private:
 
   std::vector<Point> cloud_;
 
-  std::unique_ptr<exporter> expClass_;
+  std::unique_ptr<Exporter> expClass_;
 
   /// The image data row major
   unsigned char const *imgDataPtr_{};

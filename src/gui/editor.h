@@ -53,7 +53,7 @@ private:
   std::shared_ptr<QImage> image_{};
 
   /// image2cloud generator
-  pointcloudgenerator pcloudgen_;
+  PointCloudGenerator pcloudgen_;
 
   /// Currently selected color
   QColor color_;

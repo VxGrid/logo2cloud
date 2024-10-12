@@ -2,13 +2,13 @@
 #include <iomanip>
 
 
-exporterXYZ::exporterXYZ(std::string path)
+ExporterXYZ::ExporterXYZ(std::string path)
 {
   out_.open(path, std::ofstream::out);
 }
 
 
-void exporterXYZ::run()
+void ExporterXYZ::run()
 {
   for (const auto &point : cloudData_)
   {

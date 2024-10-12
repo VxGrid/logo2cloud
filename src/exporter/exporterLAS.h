@@ -5,12 +5,12 @@
 #include "laszip/laszip_api.h"
 
 
-class exporterLAZ final : public exporter
+class ExporterLAZ final : public Exporter
 {
 public:
   /// ctor
-  exporterLAZ(std::string path);
-  virtual ~exporterLAZ();
+  ExporterLAZ(std::string path);
+  virtual ~ExporterLAZ();
   void run() override;
 
 private:
