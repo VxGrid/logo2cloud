@@ -154,7 +154,7 @@
     <name>Info</name>
     <message>
         <location filename="info.ui" line="14"/>
-        <source>Dialog</source>
+        <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
