@@ -14,6 +14,7 @@ qt6_add_translation(qmFiles ${TS_FILES})
 
 add_custom_target(translations DEPENDS ${qmFiles})
 set(CMAKE_LINK_WHAT_YOU_USE TRUE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 #set(CMAKE_EXECUTABLE_SUFFIX ".html")
 
 set(PROJECT_SOURCES
@@ -60,6 +61,11 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
+
+if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+    message("Add target link options for WASM")
+    target_link_options(${PROJECT_NAME} PUBLIC -sASYNCIFY -Os)
+endif()
 
 include(GNUInstallDirs)
 install(TARGETS ${PROJECT_NAME}

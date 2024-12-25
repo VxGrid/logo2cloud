@@ -24,8 +24,9 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui_(new Ui::MainWindow)
 {
-    qDebug() << "Setuo this" << Qt::endl;
+    qDebug() << "Setup Mainwin" << Qt::endl;
     ui_->setupUi(this);
+    ui_->mdiArea->setViewMode(QMdiArea::TabbedView);
     // menu inits
     connect(ui_->actionOpen_File, &QAction::triggered, this, &MainWindow::open);
     connect(ui_->actionClose_image, &QAction::triggered, this, &MainWindow::close);
@@ -105,29 +106,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 
 void MainWindow::open()
 {
-    /*
-        QFileDialog dialog(this, tr("Open File"));
-        static bool firstDialog = true;
-
-        if (firstDialog)
-        {
-        firstDialog = false;
-        const QStringList picturesLocations = QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
-        dialog.setDirectory(picturesLocations.isEmpty() ? QDir::currentPath() : picturesLocations.last());
-        }
-
-        QStringList mimeTypeFilters;
-        const QByteArrayList supportedMimeTypes = QImageReader::supportedMimeTypes();
-        for (const QByteArray &mimeTypeName : supportedMimeTypes)
-        mimeTypeFilters.append(mimeTypeName);
-
-        mimeTypeFilters.sort();
-        mimeTypeFilters.prepend("application/octet-stream");
-        dialog.setMimeTypeFilters(mimeTypeFilters);
-
-        if (dialog.exec() == QDialog::Accepted && loadFile(dialog.selectedFiles().first()))
-        ui_->actionOpen_File->setEnabled(false);
-    */
+#ifdef __EMSCRIPTEN__
     auto fileContentReady = [this](const QString & fileName, const QByteArray & fileContent)
     {
         if (fileName.isEmpty()) {
@@ -140,6 +119,32 @@ void MainWindow::open()
     };
     QFileDialog::getOpenFileContent("Images (*.png *.xpm *.jpg)",
         fileContentReady);
+#else
+    QFileDialog dialog(this, tr("Open File"));
+    static bool firstDialog = true;
+
+    if (firstDialog)
+    {
+        firstDialog = false;
+        const QStringList picturesLocations = QStandardPaths::standardLocations(
+                QStandardPaths::PicturesLocation);
+        dialog.setDirectory(picturesLocations.isEmpty() ? QDir::currentPath() : picturesLocations.last());
+    }
+
+    QStringList mimeTypeFilters;
+    const QByteArrayList supportedMimeTypes = QImageReader::supportedMimeTypes();
+
+    for (const QByteArray &mimeTypeName : supportedMimeTypes)
+        mimeTypeFilters.append(mimeTypeName);
+
+    mimeTypeFilters.sort();
+    mimeTypeFilters.prepend("application/octet-stream");
+    dialog.setMimeTypeFilters(mimeTypeFilters);
+
+    if (dialog.exec() == QDialog::Accepted && loadFile(dialog.selectedFiles().first()))
+        ui_->actionOpen_File->setEnabled(false);
+
+#endif
 }
 
 
@@ -164,7 +169,6 @@ bool MainWindow::loadFile(const QString &fileName)
     view->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     qDebug() << "Add subwindow" << Qt::endl;
     subWin_ = ui_->mdiArea->addSubWindow(view);
-    ui_->mdiArea->setViewMode(QMdiArea::TabbedView);
     // load image
     qDebug() << "Start image reader" << Qt::endl;
     QImageReader reader(fileName);

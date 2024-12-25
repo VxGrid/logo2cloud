@@ -8,12 +8,12 @@
 class ExporterLAZ final : public Exporter
 {
 public:
-  /// ctor
-  ExporterLAZ(std::string path);
-  virtual ~ExporterLAZ();
-  void run() override;
+    /// ctor
+    ExporterLAZ(std::string path);
+    virtual ~ExporterLAZ();
+    void run() override;
 
 private:
-  laszip_POINTER laszip_writer_{};
-  laszip_header *header_{};
+    laszip_POINTER laszip_writer_{};
+    laszip_header *header_{};
 };

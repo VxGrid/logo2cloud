@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>447</width>
+    <width>317</width>
     <height>600</height>
    </rect>
   </property>
@@ -26,10 +26,158 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="6" column="1">
-    <widget class="QLabel" name="label_2">
+   <item row="0" column="3" colspan="3">
+    <widget class="QWidget" name="w_colDisPix" native="true">
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="2">
+    <widget class="QDoubleSpinBox" name="sb_randomizer">
+     <property name="toolTip">
+      <string>Add noise to each point in this range</string>
+     </property>
+     <property name="suffix">
+      <string> [m]</string>
+     </property>
+     <property name="decimals">
+      <number>4</number>
+     </property>
+     <property name="maximum">
+      <double>1.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.010000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="2">
+    <widget class="QDoubleSpinBox" name="sb_pointSpacing">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="toolTip">
+      <string>Spacing between points</string>
+     </property>
+     <property name="suffix">
+      <string> [m]</string>
+     </property>
+     <property name="decimals">
+      <number>3</number>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="2">
+    <widget class="QDoubleSpinBox" name="sb_width">
+     <property name="suffix">
+      <string> [m]</string>
+     </property>
+     <property name="decimals">
+      <number>3</number>
+     </property>
+     <property name="value">
+      <double>10.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Width:</string>
+      <string>Height:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="1">
+    <widget class="QLabel" name="label_10">
+     <property name="toolTip">
+      <string>Approx max amount of points which will be written</string>
+     </property>
+     <property name="text">
+      <string>~points:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="5">
+    <widget class="QPushButton" name="pb_export">
+     <property name="text">
+      <string>Export</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="2">
+    <widget class="QPushButton" name="pb_removeColor">
+     <property name="toolTip">
+      <string>Set the selected color to alpha = 0</string>
+     </property>
+     <property name="text">
+      <string>Remove color</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="2">
+    <widget class="QDoubleSpinBox" name="sb_depth">
+     <property name="suffix">
+      <string> [m]</string>
+     </property>
+     <property name="decimals">
+      <number>3</number>
+     </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QLabel" name="label_8">
+     <property name="toolTip">
+      <string>Spacing between points</string>
+     </property>
+     <property name="text">
+      <string>Spacing:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1">
+    <widget class="QLabel" name="label_11">
+     <property name="toolTip">
+      <string>Add noise to each point in this range</string>
+     </property>
+     <property name="text">
+      <string>Noise:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="1">
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="5" column="2">
+    <widget class="QDoubleSpinBox" name="sb_height">
+     <property name="suffix">
+      <string> [m]</string>
+     </property>
+     <property name="decimals">
+      <number>3</number>
+     </property>
+     <property name="value">
+      <double>3.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Depth:</string>
      </property>
     </widget>
    </item>
@@ -43,10 +191,34 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="3">
-    <widget class="QLabel" name="label_5">
+   <item row="1" column="3" rowspan="2" colspan="3">
+    <widget class="QWidget" name="w_colDiag" native="true">
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="5">
+    <widget class="Line" name="line">
+     <property name="lineWidth">
+      <number>5</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>[m]</string>
+      <string>Width:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="1" colspan="4">
+    <widget class="QLineEdit" name="le_path">
+     <property name="enabled">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -63,137 +235,13 @@
      </property>
     </widget>
    </item>
-   <item row="12" column="6">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="8" column="1">
-    <widget class="QLabel" name="label_8">
-     <property name="toolTip">
-      <string>Spacing between points</string>
-     </property>
-     <property name="text">
-      <string>Spacing:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="3" rowspan="2" colspan="4">
-    <widget class="QWidget" name="w_colDiag" native="true">
-     <property name="autoFillBackground">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="2">
-    <widget class="QDoubleSpinBox" name="sb_width">
-     <property name="decimals">
-      <number>3</number>
-     </property>
-     <property name="value">
-      <double>10.000000000000000</double>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="3">
-    <widget class="QLabel" name="label_6">
-     <property name="text">
-      <string>[m]</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="3" colspan="4">
-    <widget class="QWidget" name="w_colDisPix" native="true">
-     <property name="autoFillBackground">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="11" column="1" colspan="5">
-    <widget class="QLineEdit" name="le_path">
+   <item row="10" column="2">
+    <widget class="QLineEdit" name="le_maxPoints">
      <property name="enabled">
       <bool>false</bool>
      </property>
-    </widget>
-   </item>
-   <item row="1" column="1" colspan="2">
-    <widget class="QPushButton" name="pb_removeColor">
-     <property name="toolTip">
-      <string>Set the selected color to alpha = 0</string>
-     </property>
-     <property name="text">
-      <string>Remove color</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1" colspan="6">
-    <widget class="Line" name="line">
-     <property name="lineWidth">
-      <number>5</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="2">
-    <widget class="QDoubleSpinBox" name="sb_height">
-     <property name="decimals">
-      <number>3</number>
-     </property>
-     <property name="value">
-      <double>3.000000000000000</double>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="3">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>[m]</string>
-     </property>
-    </widget>
-   </item>
-   <item row="12" column="1">
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="10" column="1">
-    <widget class="QLabel" name="label_10">
      <property name="toolTip">
       <string>Approx max amount of points which will be written</string>
-     </property>
-     <property name="text">
-      <string>~points:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="2">
-    <widget class="QDoubleSpinBox" name="sb_pointSpacing">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="toolTip">
-      <string>Spacing between points</string>
-     </property>
-     <property name="decimals">
-      <number>3</number>
      </property>
     </widget>
    </item>
@@ -207,112 +255,31 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="4" colspan="3">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
+   <item row="11" column="2">
+    <widget class="QComboBox" name="cb_exportFormat">
+     <item>
+      <property name="text">
+       <string>xyz</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>las</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>laz</string>
+      </property>
+     </item>
+    </widget>
    </item>
-   <item row="5" column="1">
-    <widget class="QLabel" name="label_3">
+   <item row="11" column="1">
+    <widget class="QLabel" name="l_exportFormat">
      <property name="text">
-      <string>Height:</string>
+      <string>Export Format:</string>
      </property>
     </widget>
-   </item>
-   <item row="7" column="2">
-    <widget class="QDoubleSpinBox" name="sb_depth">
-     <property name="decimals">
-      <number>3</number>
-     </property>
-     <property name="value">
-      <double>1.000000000000000</double>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="1">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Depth:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="3">
-    <widget class="QLabel" name="label_9">
-     <property name="text">
-      <string>[m]</string>
-     </property>
-    </widget>
-   </item>
-   <item row="11" column="6">
-    <widget class="QPushButton" name="pb_export">
-     <property name="text">
-      <string>Export</string>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="2">
-    <widget class="QDoubleSpinBox" name="sb_randomizer">
-     <property name="toolTip">
-      <string>Add noise to each point in this range</string>
-     </property>
-     <property name="decimals">
-      <number>4</number>
-     </property>
-     <property name="maximum">
-      <double>1.000000000000000</double>
-     </property>
-     <property name="singleStep">
-      <double>0.010000000000000</double>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="1">
-    <widget class="QLabel" name="label_11">
-     <property name="toolTip">
-      <string>Add noise to each point in this range</string>
-     </property>
-     <property name="text">
-      <string>Noise:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="3">
-    <widget class="QLabel" name="label_12">
-     <property name="text">
-      <string>[m]</string>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="2">
-    <widget class="QLineEdit" name="le_maxPoints">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="toolTip">
-      <string>Approx max amount of points which will be written</string>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="3">
-    <spacer name="horizontalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>
