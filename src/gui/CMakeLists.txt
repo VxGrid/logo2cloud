@@ -17,18 +17,7 @@ set(CMAKE_LINK_WHAT_YOU_USE TRUE)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 #set(CMAKE_EXECUTABLE_SUFFIX ".html")
 
-set(PROJECT_SOURCES
-    main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
-    editor.h
-    editor.cpp
-    editor.ui
-)
 
-#add_executable( logo2Cloud )
-#qt_add_executable(${PROJECT_NAME} MANUAL_FINALIZATION ${PROJECT_SOURCES})
 qt_add_executable(${PROJECT_NAME} MANUAL_FINALIZATION)
 
 target_sources(${PROJECT_NAME}
@@ -39,6 +28,9 @@ target_sources(${PROJECT_NAME}
             "editor.h"
             "editor.cpp"
             "editor.ui"
+            "info.h"
+            "info.cpp"
+            "info.ui"
             ${translations}
 )
 

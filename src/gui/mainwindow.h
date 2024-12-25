@@ -40,6 +40,9 @@ private slots:
     /// close current loaded image
     void close();
 
+    /// shows the info page
+    void info();
+
 private:
     /// loads an image from hard drive
     bool loadFile(const QString &fileName);

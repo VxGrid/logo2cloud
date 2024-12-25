@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "editor.h"
+#include "info.h"
 
 #include <QColorSpace>
 #include <QDir>
@@ -30,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     // menu inits
     connect(ui_->actionOpen_File, &QAction::triggered, this, &MainWindow::open);
     connect(ui_->actionClose_image, &QAction::triggered, this, &MainWindow::close);
+    connect(ui_->actionInfo, &QAction::triggered, this, &MainWindow::info);
     setCentralWidget(ui_->mdiArea);
     //resize(QGuiApplication::primaryScreen()->availableSize());
     qDebug() << "size of this" << this->size() << Qt::endl;
@@ -158,6 +160,13 @@ void MainWindow::close()
         image_.reset();
         ui_->actionOpen_File->setEnabled(true);
     }
+}
+
+
+void MainWindow::info()
+{
+    auto info = new Info(this);
+    info->exec();
 }
 
 
