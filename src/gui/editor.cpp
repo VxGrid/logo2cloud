@@ -190,22 +190,6 @@ void Editor::onPropertyChanged()
         file.close();
         file.remove();
         QFileDialog::saveFileContent(ba, "logoPointCloud." + ui_->cb_exportFormat->currentText());
-        /*
-                QImage img(*image_);
-                pcloudgen_.setData(img.bits(), img.height(), img.width());
-                std::vector<Point> cloudData;
-                pcloudgen_.image2XZCloud(cloudData);
-                QByteArray ba;
-                ba.reserve(cloudData.size() * 6 * 4);
-
-                for (const auto &point : cloudData)
-                {
-                    ba += (QString("%1 %2 %3 %4 %5 %6\n").arg(point.x_).arg(point.y_).arg(point.z_)
-                            .arg(int(point.r_)).arg(int(point.g_)).arg(int(point.b_))).toUtf8();
-                }
-
-                QFileDialog::saveFileContent(ba, "test.xyz");
-        */
 #else \
     //qDebug() << "Save to: " << fPath << Qt::endl; \
 // Chose path
@@ -230,17 +214,23 @@ void Editor::onPropertyChanged()
         dialog.setNameFilters(filters);
         dialog.selectNameFilter(filters.first());
         dialog.setViewMode(QFileDialog::Detail);
-        QStringList fileName;
+        QStringList fileNameList;
 
         if (dialog.exec() == QDialog::Accepted)
         {
             // export running, freeze property window
             this->setEnabled(false);
             // Get stuff from dialog
-            fileName = dialog.selectedFiles();
-            QFileInfo fi(fileName.first());
+            fileNameList = dialog.selectedFiles();
+            QString fileName = fileNameList.first();
+            QFileInfo fi(fileNameList.first());
             QString fPath = fi.absolutePath() + "/" + fi.completeBaseName();
             ui_->le_path->setText(fPath);
+            qDebug() << "Remove: " << fileName << Qt::endl;
+
+            if (statusBar_) statusBar_->showMessage(QString(tr("Remove %1")).arg(fileName));
+
+            qDebug() << "Remove success: " << QFile::remove(fileName) << Qt::endl;
             qDebug() << "Export cloud start";
             QImage img(*image_); // make copy
             qDebug() << "image size: " << img.size() << Qt::endl;
@@ -269,12 +259,11 @@ void Editor::onPropertyChanged()
             qDebug() << "Export cloud finished" << Qt::endl;
             this->setEnabled(true);
 
-            if (statusBar_)
-                statusBar_->showMessage(tr("Export finished"));
-        }
+            if (statusBar_) statusBar_->showMessage(tr("Export finished"));
+        } // dialog to save was accepted
 
 #endif
-    }
+    } // sender() == ui_->pb_export
 }
 
 

@@ -96,7 +96,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="editor.ui" line="280"/>
+        <location filename="editor.ui" line="277"/>
+        <source>e57</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editor.ui" line="285"/>
         <source>Export Format:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -127,26 +132,31 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="editor.cpp" line="212"/>
+        <location filename="editor.cpp" line="196"/>
         <source>Save File as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="editor.cpp" line="161"/>
-        <location filename="editor.cpp" line="253"/>
+        <location filename="editor.cpp" line="243"/>
         <source>Initializing the writer failed!!!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="editor.cpp" line="173"/>
-        <location filename="editor.cpp" line="263"/>
+        <location filename="editor.cpp" line="253"/>
         <source>Export Status: %1 %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="editor.cpp" line="183"/>
-        <location filename="editor.cpp" line="273"/>
+        <location filename="editor.cpp" line="262"/>
         <source>Export finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="editor.cpp" line="231"/>
+        <source>Remove %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -169,8 +179,21 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Built by VxGrid: &lt;a href=&quot;https://github.com/VxGrid/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;https://github.com/VxGrid/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Using&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;E57 (&lt;a href=&quot;https://github.com/asmaloney/libE57Format?tab=BSL-1.0-1-ov-file#readme&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;BSL-1.0 license&lt;/span&gt;&lt;/a&gt;): &lt;a href=&quot;https://github.com/asmaloney/libE57Format&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;https://github.com/asmaloney/libE57Format&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;LASZip (&lt;a href=&quot;https://github.com/LASzip/LASzip?tab=Apache-2.0-1-ov-file#readme&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;Apache 2&lt;/span&gt;&lt;/a&gt;): &lt;a href=&quot;https://github.com/LASzip/LASzip&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;https://github.com/LASzip/LASzip&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Qt (&lt;a href=&quot;https://www.qt.io/licensing/open-source-lgpl-obligations&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GPL / LGPL&lt;/span&gt;&lt;/a&gt;): &lt;a href=&quot;https://www.qt.io/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;https://www.qt.io/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Built by VxGrid: &lt;a href=&quot;https://github.com/VxGrid/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;https://github.com/VxGrid/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Using&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;LASZip (&lt;a href=&quot;https://github.com/LASzip/LASzip?tab=Apache-2.0-1-ov-file#readme&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;Apache 2&lt;/span&gt;&lt;/a&gt;): &lt;a href=&quot;https://github.com/LASzip/LASzip&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;https://github.com/LASzip/LASzip&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Qt (&lt;a href=&quot;https://www.qt.io/licensing/open-source-lgpl-obligations&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GPL / LGPL&lt;/span&gt;&lt;/a&gt;): &lt;a href=&quot;https://www.qt.io/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;https://www.qt.io/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -272,6 +272,11 @@
        <string>laz</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>e57</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="11" column="1">

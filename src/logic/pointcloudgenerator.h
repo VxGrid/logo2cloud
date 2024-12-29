@@ -16,8 +16,8 @@ public:
         XYZ = 0,
         LAS,
         LAZ,
-        //        E57, // TODO: implement
-        //        PLY,
+        E57,
+        //        PLY,  // TODO: implement
     };
 
 
@@ -50,14 +50,13 @@ public:
     /// Returns reference to point cloud data
     std::vector<Point>& getData();
 
-    /// calculates out of the image a XZ point cloud (no depth)
-    void image2XZCloud(std::vector<Point> &cloud);
-
     /// Getter function for the file formats to save
     std::vector<std::string> fileFormats() const;
 
 private:
 
+    /// calculates out of the image a XZ point cloud (no depth)
+    void image2XZCloud(std::vector<Point> &cloud);
 
     /// Adds the Y coordinate 3D points to the cloud
     // void addDepth2Cloud(std::vector<Point> &cloud);
@@ -68,7 +67,7 @@ private:
     // static void randomizeCloud(std::vector<Point> &cloudInOut, double randomRange, unsigned int threads2Spawn);
 
     /// The available file formats to save
-    std::vector<std::string> fileFormats_{"ASCII (*.xyz)", "LASer (*.las)", "Compressed LASer (*.laz)"}; //, , "ASTM (*.e57)", "Stanford (*.ply)"};
+    std::vector<std::string> fileFormats_{"ASCII (*.xyz)", "LASer (*.las)", "Compressed LASer (*.laz)", "ASTM (*.e57)"}; // "Stanford (*.ply)"};
 
     std::vector<Point> cloud_;
 

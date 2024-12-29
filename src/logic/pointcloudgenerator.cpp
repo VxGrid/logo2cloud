@@ -1,5 +1,9 @@
 #include "pointcloudgenerator.h"
 
+#ifdef BUILD_E57_WRITER
+#include "exporterE57.h"
+#endif
+
 #ifdef BUILD_LAS_WRITER
 #include "exporterLAS.h"
 #endif
@@ -38,6 +42,9 @@ PointCloudGenerator::PointCloudGenerator()
 #ifdef BUILD_LAS_WRITER
     fileFormats_.emplace_back("LASer (*.las)");
     fileFormats_.emplace_back("Compressed LASer (*.laz)");
+#endif
+#ifdef BUILD_E57_WRITER
+    fileFormats_.emplace_back("ASTM (*.e57)");
 #endif
 }
 
@@ -109,11 +116,10 @@ void randomizeCloudFunc(std::vector<Point> &cloudInOut, double randomRange,
     while (neededCycles > 0)
     {
         int howManyThreadsDoIWantToCreate = std::min(neededCycles, threads2Spawn);
-        std::vector<std::future<void>> futures;
 
-        for (int i = 0; i < howManyThreadsDoIWantToCreate; ++i) // start all threads with the lambda
+        if (howManyThreadsDoIWantToCreate < 2)
         {
-            futures.push_back(std::async(std::launch::async, cloudPartRandomizer, startIterLoc, endIterLoc));
+            cloudPartRandomizer(startIterLoc, endIterLoc);
             startIterLoc = endIterLoc + 1;
             endIterLoc = startIterLoc + stepSize - 1;
             --neededCycles;
@@ -121,9 +127,24 @@ void randomizeCloudFunc(std::vector<Point> &cloudInOut, double randomRange,
             if (endIterLoc >= cloudInOut.size())
                 break; // to be sure not to overshoot, should not happen
         }
+        else
+        {
+            std::vector<std::future<void>> futures;
 
-        for (auto &future : futures) // wait till all threads have finished
-            future.get();
+            for (int i = 0; i < howManyThreadsDoIWantToCreate; ++i) // start all threads with the lambda
+            {
+                futures.push_back(std::async(std::launch::async, cloudPartRandomizer, startIterLoc, endIterLoc));
+                startIterLoc = endIterLoc + 1;
+                endIterLoc = startIterLoc + stepSize - 1;
+                --neededCycles;
+
+                if (endIterLoc >= cloudInOut.size())
+                    break; // to be sure not to overshoot, should not happen
+            }
+
+            for (auto &future : futures) // wait till all threads have finished
+                future.get();
+        }
     }
 
     // calculate remaining points
@@ -170,6 +191,13 @@ int PointCloudGenerator::exportCloud(std::string path, bool structured)
             case EXPORTER::LAZ:
                 path.append(".laz");
                 expClass_ = std::make_unique<ExporterLAZ>(path);
+                break;
+#endif
+#ifdef BUILD_E57_WRITER
+
+            case EXPORTER::E57:
+                path.append(".e57");
+                expClass_ = std::make_unique<ExporterE57>(path);
                 break;
 #endif
 
@@ -248,7 +276,7 @@ void PointCloudGenerator::runSingleThread()
 {
     if (!expClass_)
     {
-        std::cout << "No Export pointer, exit\n";
+        std::cerr << "No Export pointer, exit\n";
         return;
     }
 
@@ -258,21 +286,27 @@ void PointCloudGenerator::runSingleThread()
     const double depthStep = cPointSpacing_; // based on spacing between height and width
     // streamline here
     double depth2Calc{}; // start with depth 0, so we don't need to alter cloud_
+    uint64_t writtenPoints{};
+    std::cerr << "Randomizer: " << cRandomRange_ << '\n';
+    int whileCounter{};
 
     while (depth2Calc < cDepth_)
     {
+        ++whileCounter;
         currentLayerNumCalculating_ += 1.0;
         addDepthLayer2CloudFunc(cloud_, depthLayer, depth2Calc);
 
-        if (cRandomRange_) // FIXME: randomizer uses threads
-            randomizeCloudFunc(depthLayer, cRandomRange_, processorCount_ - 1);
+        if (cRandomRange_) randomizeCloudFunc(depthLayer, cRandomRange_, 1);
 
+        writtenPoints += depthLayer.size();
         expClass_->setData(depthLayer);
         expClass_->run();
         depthLayer.clear();
         depth2Calc += depthStep;
     }
 
+    std::cerr << "Written points: " << writtenPoints << '\n';
+    std::cerr << "while counter: " << whileCounter << '\n';
     // Finished calculating, now reset
     expClass_.reset();
     currentLayerNumCalculating_ = 0.0;
@@ -303,6 +337,13 @@ std::vector<Point> &PointCloudGenerator::getData()
     // cWidth_ == cols_  ---> X
     // cDepth_ == depending on the above ---> Y
 */
+
+
+std::vector<std::string> PointCloudGenerator::fileFormats() const
+{
+    return fileFormats_;
+}
+
 
 void PointCloudGenerator::image2XZCloud(std::vector<Point> &cloud)
 {
@@ -336,11 +377,6 @@ void PointCloudGenerator::image2XZCloud(std::vector<Point> &cloud)
             cloud.emplace_back(Point{X, Y, cHeight_ - Z, imgDataPtr_[iter + 2], imgDataPtr_[iter + 1], imgDataPtr_[iter], 0});
         }
     }
-}
-
-std::vector<std::string> PointCloudGenerator::fileFormats() const
-{
-    return fileFormats_;
 }
 
 /*
