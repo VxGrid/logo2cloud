@@ -62,15 +62,43 @@ endif()
 if(BUILD_E57_WRITER)
     target_compile_definitions(${PROJECT_NAME} PUBLIC BUILD_E57_WRITER)
 
-    find_package(XercesC REQUIRED)
+    if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+        #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_ATOMICS=1 -s USE_PTHREADS=1 -s ALLOW_MEMORY_GROWTH=1 --shared-memory")
+        find_package(Threads REQUIRED)
+        set(E57INCLUDEDIR "/home/martin/Dokumente/libs/e57/wasminstall/include" CACHE FILEPATH "Path to E57 include dir")
+        set(E57LIBS "/home/martin/Dokumente/libs/e57/wasminstall/lib/libE57Format.a" CACHE FILEPATH "Path to E57 libs")
+        set(XercesC_DIR "/home/martin/Dokumente/libs/xerces/wasminstall/lib/cmake/XercesC")
+        find_package (XercesC REQUIRED PATHS "/home/martin/Dokumente/libs/xerces/wasminstall/lib" "/home/martin/Dokumente/libs/xerces/xerces-c-3.3.0/cmake" NO_DEFAULT_PATH)
+        # set(XercesC_VERSION "3.3.0")
+        # set(XercesC_INCLUDE_DIR "/home/martin/Dokumente/libs/xerces/wasminstall/include")
+        # set(XercesC_INCLUDE_DIRS ${XercesC_INCLUDE_DIR})
+        # set(XercesC_FOUND TRUE)
+        # set(XercesC_LIBRARY_RELEASE "/home/martin/Dokumente/libs/xerces/wasminstall/lib/libxerces-c.a")
+        # set(XercesC_LIBRARIES ${XercesC_LIBRARY_RELEASE})
+
+        target_link_libraries(${PROJECT_NAME} PRIVATE
+            ${E57LIBS}
+            #${XercesC_LIBRARIES}
+            Threads::Threads
+            XercesC::XercesC
+        )
+    else()
+        find_package(XercesC REQUIRED)
+        set(E57INCLUDEDIR "/home/martin/Dokumente/libs/e57/install/include" CACHE FILEPATH "Path to E57 include dir")
+        set(E57LIBS "/home/martin/Dokumente/libs/e57/install/lib/libE57Format.a" CACHE FILEPATH "Path to E57 libs")
+
+        target_link_libraries(${PROJECT_NAME} PRIVATE
+            ${E57LIBS}
+            XercesC::XercesC
+        )
+    endif()
     message("Xerces found: ${XercesC_FOUND} ${XercesC_INCLUDE_DIRS}")
     #set(XercesC_VERSION "3.3.0")
     #set(XercesC_INCLUDE_DIRS "/home/martin/Dokumente/libs/xerces/wasminstall/include")
     #set(XercesC_FOUND TRUE)
     #set(XercesC_LIBRARIES "/home/martin/Dokumente/libs/xerces/wasminstall/lib/libxerces-c.a")
 
-    set(E57INCLUDEDIR "/home/martin/Dokumente/libs/e57/install/include" CACHE FILEPATH "Path to E57 include dir")
-    set(E57LIBS "/home/martin/Dokumente/libs/e57/install/lib/libE57Format.a" CACHE FILEPATH "Path to E57 libs")
+
 
     target_include_directories(${PROJECT_NAME} PUBLIC
         ${E57INCLUDEDIR}
@@ -79,11 +107,6 @@ if(BUILD_E57_WRITER)
     target_sources(${PROJECT_NAME} PRIVATE
         "exporterE57.h"
         "exporterE57.cpp"
-    )
-
-    target_link_libraries(${PROJECT_NAME} PRIVATE
-        ${E57LIBS}
-        XercesC::XercesC
     )
 
 endif()

@@ -149,6 +149,9 @@ void Editor::onPropertyChanged()
     else if (sender() == ui_->pb_export)
     {
 #ifdef __EMSCRIPTEN__
+
+        if (statusBar_) statusBar_->showMessage(tr("Converting Cloud"));
+
         QImage img(*image_); // make copy
         qDebug() << "image size: " << img.size() << Qt::endl;
         pcloudgen_.setData(img.bits(), img.height(), img.width());
@@ -158,7 +161,7 @@ void Editor::onPropertyChanged()
 
         if (pcloudgen_.exportCloud(fPath.toStdString()))
         {
-            statusBar_->showMessage(tr("Initializing the writer failed!!!"));
+            statusBar_->showMessage(tr("Initializing the writer module failed!!!"));
             return;
         }
 
@@ -240,7 +243,7 @@ void Editor::onPropertyChanged()
 
             if (pcloudgen_.exportCloud(fPath.toStdString()))
             {
-                statusBar_->showMessage(tr("Initializing the writer failed!!!"));
+                statusBar_->showMessage(tr("Initializing the writer module failed!!!"));
                 return;
             }
 
