@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(logo2CloudMain
     LANGUAGES CXX
-    VERSION 1.0.2
+    VERSION 1.1.0
     DESCRIPTION "Project to convert a logo (image) into a point cloud."
 )
 
