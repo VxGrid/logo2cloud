@@ -211,7 +211,6 @@ int PointCloudGenerator::exportCloud(std::string path, bool structured)
         return EXIT_FAILURE;
     }
 
-    expClass_->setPath(path);
     return EXIT_SUCCESS;
 }
 
@@ -374,7 +373,9 @@ void PointCloudGenerator::image2XZCloud(std::vector<Point> &cloud)
                 continue; // alpha empty, continue
 
             // Z axis and rows coordinate system are inverted to each other
-            cloud.emplace_back(Point{X, Y, cHeight_ - Z, imgDataPtr_[iter + 2], imgDataPtr_[iter + 1], imgDataPtr_[iter], 0});
+            cloud.emplace_back(Point{X, Y, cHeight_ - Z,
+                    imgDataPtr_[iter + 2], imgDataPtr_[iter + 1], imgDataPtr_[iter],
+                    ((imgDataPtr_[iter + 2] * 0.2125f + imgDataPtr_[iter + 1] * 0.7154f + imgDataPtr_[iter] * 0.0721f) / 255.f)});
         }
     }
 }

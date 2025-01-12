@@ -247,7 +247,7 @@ void Editor::onPropertyChanged()
                 return;
             }
 
-            auto future = std::async(std::launch::async, &PointCloudGenerator::runSingleThread, &pcloudgen_);
+            auto future = std::async(std::launch::async, &PointCloudGenerator::run, &pcloudgen_);
             std::future_status futureStatus;
 
             do

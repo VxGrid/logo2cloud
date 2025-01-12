@@ -1,5 +1,6 @@
 #include "exporterLAS.h"
 
+#include <cmath>
 #include <iostream>
 #include <string.h>
 
@@ -88,9 +89,8 @@ ExporterLAZ::ExporterLAZ(std::string path)
 
 ExporterLAZ::~ExporterLAZ()
 {
-    // close the writer
-    if (laszip_close_writer(
-            laszip_writer_)) // I guess throwing in a destructor is a nono? See E.16 ore guidelines
+    // close the writer // I guess throwing in a destructor is a nono? See E.16 or guidelines
+    if (laszip_close_writer(laszip_writer_))
         std::cout << "DLL ERROR: closing laszip writer" << std::endl;
 
     // destroy the writer
@@ -132,7 +132,8 @@ void ExporterLAZ::run()
         point->rgb[0] = uint16_t(pointXYZ.r_) * 255;
         point->rgb[1] = uint16_t(pointXYZ.g_) * 255;
         point->rgb[2] = uint16_t(pointXYZ.b_) * 255;
-        point->intensity = (int(pointXYZ.r_) + int(pointXYZ.g_) + int(pointXYZ.b_)) / 3;
+        constexpr uint16_t intensityMulti{65535}; // 2^16
+        point->intensity = pointXYZ.i_ * intensityMulti;
 
         if (laszip_write_point(laszip_writer_))
         {

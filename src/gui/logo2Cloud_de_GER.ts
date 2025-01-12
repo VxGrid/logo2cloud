@@ -47,8 +47,9 @@
     </message>
     <message>
         <location filename="editor.ui" line="111"/>
-        <source>Set the selected color to alpha = 0</source>
-        <translation>Setze die selektierte Farbe zu alpha = 0</translation>
+        <source>Set the selected color to alpha = 0 (F1)</source>
+        <oldsource>Set the selected color to alpha = 0</oldsource>
+        <translation type="unfinished">Setze die selektierte Farbe zu alpha = 0</translation>
     </message>
     <message>
         <location filename="editor.ui" line="114"/>

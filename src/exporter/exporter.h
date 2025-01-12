@@ -9,11 +9,11 @@ struct Point
     /// Position cartesian coordinates
     double x_{}, y_{}, z_{};
 
-    /// Color, red, green, blue
-    unsigned char r_{}, g_{}, b_{};
+    /// Color, red, green, blue [0; 255]
+    uint8_t r_{}, g_{}, b_{};
 
-    /// Intensity/Reflectivity
-    unsigned char i_{};
+    /// Intensity/Reflectivity [0.0; 1.0]
+    float i_{};
 };
 
 
@@ -21,10 +21,7 @@ class Exporter
 {
 public:
     /// Destructor
-    virtual ~Exporter();
-
-    /// Sets the output file path
-    virtual void setPath(std::string path);
+    virtual ~Exporter() = default;
 
     /// Set the data
     virtual void setData(const std::vector<Point> &cloud);
@@ -38,7 +35,4 @@ public:
 protected:
     /// The cloud data to export
     std::vector<Point> cloudData_{};
-
-    /// Path where to export the point cloud to
-    std::string path_{};
 };

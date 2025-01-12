@@ -108,7 +108,7 @@
    <item row="1" column="1" colspan="2">
     <widget class="QPushButton" name="pb_removeColor">
      <property name="toolTip">
-      <string>Set the selected color to alpha = 0</string>
+      <string>Set the selected color to alpha = 0 (F1)</string>
      </property>
      <property name="text">
       <string>Remove color</string>
