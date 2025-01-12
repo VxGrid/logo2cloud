@@ -20,6 +20,9 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 qt_add_executable(${PROJECT_NAME} MANUAL_FINALIZATION)
 
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC -D_PROJECT_VERSION_="${PROJECT_VERSION}")
+
 target_sources(${PROJECT_NAME}
     PRIVATE "main.cpp"
             "mainwindow.cpp"
