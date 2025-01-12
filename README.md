@@ -1,6 +1,6 @@
 # logo2cloud
 Transform a logo (image) into a point cloud.  
-Current version is v1.0.1, find the download for Windows: https://github.com/VxGrid/logo2cloud/releases/tag/v1.0.1  
+Current version is v1.1.0
 
 
 The GUI was created using Qt: https://www.qt.io/
